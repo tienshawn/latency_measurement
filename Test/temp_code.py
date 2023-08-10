@@ -4,15 +4,12 @@ from pyzbar.pyzbar import decode, ZBarSymbol
 import sys
 import cv2
 import time
-
-old_stdout = sys.stdout
-log_file = open("Streaming_Barcode.log","w")
-sys.stdout = log_file
+import threading
 
 rtmp_url = "rtmp://localhost/live/stream"
 
-path = "/home/tienshawn1/Downloads/output(bigger_barcode).mp4"
-cap = cv2.VideoCapture(path)
+path_video = "/home/tienshawn1/Downloads/output_bigger_barcode.mp4"
+cap = cv2.VideoCapture(path_video)
 
 
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -29,18 +26,27 @@ command = ['ffmpeg', '-re',
            rtmp_url]
 
 p = subprocess.Popen(command, stdin=subprocess.PIPE, stderr=True)
-
+images = []
+i = 0
 while True:
     success, img = cap.read()
     if not success:
         break 
-
-    decoded_data = decode(img)[0].data.decode("utf-8")
-    print("frame: ", decoded_data, "time: ", time.monotonic())     
-
+    data = {
+        'image':img,
+        'time':time.monotonic()
+    }
+    images.append(data) 
     p.stdin.write(img.tobytes())
-    if cv2.waitKey(5) & 0xFF == 27:
-        break
+
+old_stdout = sys.stdout
+log_file = open("TestCode.log","w")
+sys.stdout = log_file
+path = '/home/tienshawn1/Desktop/Latency_Code/Image'
+
+for i in data:
+    decoded_data = decode(i['image'])[0].data.decode("utf-8")
+    print("frame: ", decoded_data, "time: ", i['time'])
 
 cap.release()
 sys.stdout = old_stdout
