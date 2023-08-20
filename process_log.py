@@ -1,6 +1,7 @@
 import re
 import pandas as pd
-from datetime import date
+from datetime import datetime
+import os
 
 def data_processing(logfile):
     with open(logfile) as f:
@@ -34,39 +35,46 @@ def data_processing(logfile):
             print("Error")
 
 #Get the filename here
-log1 = 'source_1.log'
+log1 = 'source.log'
 frame1, time1, count1 = data_processing(log1)
 
-log2 = 'transcoder_1.log'
+log2 = 'transcoder.log'
 frame2, time2, count2 = data_processing(log2)
 
 time1_excel = []
 time2_excel = []
-delay_value = []
+diff_value = []
+delay_final = []
 for i in range(count1):
     for j in range(count2):
-        if (frame1[i] == frame2[j]):
-            delay_value.append(time1[i] - time2[j])
+        if (frame1[i] == frame2[j] and time2[j] - time1[i] < 1):
+            diff_value.append(time2[j]-time1[i])
             time1_excel.append(time1[i])
             time2_excel.append(time2[j])
+            print(frame1[i], frame2[j])
+            print("source:", time1[i], "-", "transcoder:", time2[j], "=", time2[j] - time1[i])
 
-fps_avg = []
-for i in range(1,count1):
-    fps_avg.append(time1(i) - time1(i-1))
+delay_final = sum(diff_value) / len(diff_value)
+print(delay_final)
 
-fps_value = sum(fps)
-
+with open("Delay_history.log", 'a') as d:
+    string = "Delay: " + str(delay_final) + " - Date: " + str(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")) + "\n"
+    d.write(string)
 
 def data_into_excel():
-    output_file = 'Data_Check.xlsx'        
+    output_name = 'Data_'+str(datetime.now().strftime("%d-%m-%Y, %H:%M:%S")) +'.xlsx'  
+    output_dir = './Latency_Data_excel'  
+    if not os.path.exists(output_dir):  
+        os.mkdir(output_dir)  
+    output_file = os.path.join(output_dir, output_name)   
+
     df = pd.DataFrame()
     df['Time 1'] = time1_excel
     df['Time 2'] = time2_excel
+    df['Diff'] = diff_value
+    df['Delay'] = delay_final
 
     df.to_excel(output_file, index=False)
 
-delay_final = sum(delay_value) / len(delay_value)
-# with open("Delay_history.log", 'a') as d:
-#     string = "Delay: " + str(delay_final) + " - Date: " + str(date.today().strftime("%d/%m/%Y")) + "\n"
-#     d.write(string)
+data_into_excel()
 

@@ -38,7 +38,6 @@ RUN mkdir latency_measurement
 
 
 COPY latency_cal1.py /latency_measurement
-COPY latency_count.py /latency_measurement
 COPY input.mp4 /latency_measurement
 
 COPY nginx.sh /latency_measurement

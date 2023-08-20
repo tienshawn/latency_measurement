@@ -6,7 +6,7 @@ export SOURCE_RTMP_URL="$(getent hosts $SOURCE_STREAM_SERVICE | awk '{ print $1 
 echo "exported url of source streaming: $SOURCE_RTMP_URL"
 echo "starting face detection func..."
 
-python3 latency_cal1.py & python3 latency_count.py & python3 capture.py
+python3 latency_cal1.py 
 
 # while true
 # do :
