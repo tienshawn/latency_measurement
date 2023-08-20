@@ -1,15 +1,15 @@
-**Latency Measurement Tools for Streaming Function Services**
+**LATENCY MEASUREMENT TOOL FOR STREAMING FUNCTION SERVICE**
 
-***IMPLEMENTATION OF THE TOOL***
+***Implementation of the tool***
 1. The source_streaming container:
 - The source streaming function is inside the container *tienshawn/latency:1.4* .The container itself will log the frame/ time with a rate of 48 frames per sample.
 - Inside the container the frame-time will be log under the name *source.log*. It will look like this:
-    frame: 00000000 - time: 2018249.863058621   (frame 0)
-    frame: 00000482 - time: 2018251.762237232   (frame 48)
-    frame: 00000963 - time: 2018253.683992296   (frame 96)
-    frame: 00001441 - time: 2018255.608781408   (frame 144)
-    frame: 00001922 - time: 2018257.522894028   (frame 192)
-    frame: 00002400 - time: 2018259.442135818   (frame 240) (the last number in the frame is the checksum, omit it)
+frame: 00000000 - time: 2018249.863058621   (frame 0)
+frame: 00000482 - time: 2018251.762237232   (frame 48)
+frame: 00000963 - time: 2018253.683992296   (frame 96)
+frame: 00001441 - time: 2018255.608781408   (frame 144)
+frame: 00001922 - time: 2018257.522894028   (frame 192)
+frame: 00002400 - time: 2018259.442135818   (frame 240) (the last number in the frame is the checksum, omit it)
 
 2. The transcoder container:
 - Then we will run the transcoder container. Get inside the transcoder container using *docker exec -it <name_container> /bin/bash*, then execute the transcode command using ffmpeg (it's inside the *nginx.sh* file)
