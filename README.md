@@ -1,6 +1,6 @@
-# **LATENCY MEASUREMENT TOOL FOR STREAMING FUNCTION SERVICE**
+# **LATENCY MEASUREMENT FOR STREAMING FUNCTION SERVICE**
 
-## **Implementation of the tool**
+## **Ideal and implementation**
 ### **1. The source_streaming container:**
 - The source streaming function is inside the container *tienshawn/latency:1.4* .The container itself will log the frame/ time with a rate of 48 frames per sample.
 - Inside the container the frame-time will be log under the name *source.log*. It will look like this:  <br />
