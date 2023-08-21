@@ -35,10 +35,10 @@ def data_processing(logfile):
             print("Error")
 
 #Get the filename here
-log1 = 'source.log'
+log1 = '/home/tienshawn1/Desktop/source.log'
 frame1, time1, count1 = data_processing(log1)
 
-log2 = 'transcoder.log'
+log2 = '/home/tienshawn1/Desktop/transcoder.log'
 frame2, time2, count2 = data_processing(log2)
 
 time1_excel = []

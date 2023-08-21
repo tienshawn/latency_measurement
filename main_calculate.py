@@ -1,8 +1,7 @@
 import cv2
-import subprocess
 from pyzbar.pyzbar import decode
 import time
-from queue import Queue, Empty, Full
+from queue import Queue
 from threading import Thread
 import logging
 
@@ -52,7 +51,9 @@ def get_data(queue):
             logging.info('', extra={'frame_value': f'{decoded_data}', 
                                     'time_value': f'{time}'})
         except:
-          continue
+            continue
+        if (queue.empty()):
+            break
 
 
 
